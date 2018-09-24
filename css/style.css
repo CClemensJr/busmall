@@ -1,1 +1,28 @@
-/* Use CSS to center the images in the middle of the row and normalize spacing */
+/* DONE - Style the navbar */
+/* Center the images in the middle of the row */
+/* Normalize spacing */
+
+body > header {
+    background: black;
+    height: 6em;
+    margin-bottom: 1.6em;
+    width: 100%;
+}
+
+body > header > nav {
+    color: silver;
+    margin-left: 15%;
+    margin-right: 15;
+
+}
+
+body > header > nav > figure {
+    float: left;
+    margin-right: .8em;
+    margin-top: .8em;
+}
+
+body > header > nav > h1 {
+    font-size: 3em;
+    padding-top: .5em;
+}
