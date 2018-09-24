@@ -2,7 +2,11 @@
 
 // DONE - Store the clicks in a global variable 
 var totalClicks = 0;
-var images = [['/img/bag.jpg', '/img/banana.jpg', '/img/bathroom.jpg', '/img/boots.jpg', '/img/breakfast.jpg',      'img/bubblegum.jpg', '/img/chair.jpg', '/img/cthulu.jpg', '/img/dog-duck.jpg', '/img/dragon.jpg', '/img/pen.jpg','/img/pet-sweep.jpg', '/img/scissors.jpg','/img/shark.jpg','/img/sweep.jpg','/img/tauntaun.jpg','/img/unicorn.jpg','/img/usb.gif','/img/water-can.jpg','/img/wine-glass.jpg'], ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulu', 'dog-duck', 'dragon', 'pen', 'pet-sweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'unicorn', 'usb', 'water-can', 'wine-glass']];
+var images = [['/img/bag.jpg', '/img/banana.jpg', '/img/bathroom.jpg', '/img/boots.jpg', '/img/breakfast.jpg',      'img/bubblegum.jpg', '/img/chair.jpg', '/img/cthulu.jpg', '/img/dog-duck.jpg', '/img/dragon.jpg', '/img/pen.jpg','/img/pet-sweep.jpg', '/img/scissors.jpg','/img/shark.jpg','/img/sweep.png','/img/tauntaun.jpg','/img/unicorn.jpg','/img/usb.gif','/img/water-can.jpg','/img/wine-glass.jpg'], ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulu', 'dog-duck', 'dragon', 'pen', 'pet-sweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'unicorn', 'usb', 'water-can', 'wine-glass']];
+
+var productOnLeft = document.getElementById('product1');
+var productInMiddle = document.getElementById('product2');
+var productOnRight = document.getElementById('product3');
 
 
 // Display potential products in a row of 3;
@@ -26,6 +30,31 @@ for (var i = 0; i < images[0].length; i++)
 
 
   //Use a function to put 3 random images onto the page
+function showProducts()
+{
+    var leftNum = rando(0, Product.allProducts.length);
+    var midNum = rando(0, Product.allProducts.length);
+    var rightNum = rando(0, Product.allProducts.length);
+
+    productOnLeft.src = Product.allProducts[leftNum].productImgSrc;
+    productOnLeft.alt = Product.allProducts[leftNum].productName;
+
+    productInMiddle.src = Product.allProducts[midNum].productImgSrc;
+    productInMiddle.alt = Product.allProducts[midNum].productName;
+
+    productOnRight.src = Product.allProducts[rightNum].productImgSrc;
+    productOnRight.alt = Product.allProducts[rightNum].productName;
+};
+
+
+function rando(min, max)
+{
+  var randomNumber = Math.floor(Math.random() * (max - min)) + min;
+ 
+  return randomNumber;
+}
+
+showProducts();
   //Make sure that each item is different.
   //Add 1 to the item shown counter for each item object shown
   // Clear the images then show 3 new items
