@@ -1,6 +1,6 @@
 /* DONE - Style the navbar */
-/* Center the images in the middle of the row */
-/* Normalize spacing */
+/* DONE - Center the images in the middle of the row */
+/* DONE - Normalize spacing */
 
 body > header {
     background: black;
@@ -11,8 +11,8 @@ body > header {
 
 body > header > nav {
     color: silver;
-    margin-left: 15%;
-    margin-right: 15;
+    margin-left: 10%;
+    margin-right: 10%;
 
 }
 
@@ -25,4 +25,28 @@ body > header > nav > figure {
 body > header > nav > h1 {
     font-size: 3em;
     padding-top: .5em;
+}
+
+body > main {
+    width: 100%;
+}
+
+body > main > section {
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+body > main > section > h2 {
+    font-size: 2em;
+    margin-bottom: 1.6em;
+    text-align: center;
+}
+
+body > main > section > figure {
+    display: inline;
+    width: 100%;
+}
+
+body > main > section > figure > img {
+    padding: 1em;
 }
