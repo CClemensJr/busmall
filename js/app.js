@@ -2,6 +2,8 @@
 
 // DONE - Store the clicks in a global variable 
 var totalClicks = 0;
+var images = [['/img/bag.jpg', '/img/banana.jpg', '/img/bathroom.jpg', '/img/boots.jpg', '/img/breakfast.jpg',      'img/bubblegum.jpg', '/img/chair.jpg', '/img/cthulu.jpg', '/img/dog-duck.jpg', '/img/dragon.jpg', '/img/pen.jpg','/img/pet-sweep.jpg', '/img/scissors.jpg','/img/shark.jpg','/img/sweep.jpg','/img/tauntaun.jpg','/img/unicorn.jpg','/img/usb.gif','/img/water-can.jpg','/img/wine-glass.jpg'], ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulu', 'dog-duck', 'dragon', 'pen', 'pet-sweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'unicorn', 'usb', 'water-can', 'wine-glass']];
+
 
 // Display potential products in a row of 3;
   //DONE - Create an Item object constructor that takes a source and a name as parameters and stores the number of times a Product is shown and selected in instance properties
@@ -13,10 +15,16 @@ function Product(filepath, filename) {
 
     Product.allProducts.push(this);
 }
+//DONE - Push each instance into an object array
 Product.allProducts = [];
 
-  //Create instances of the Item object
-  //Push each instance into an object array
+//DONE - Create instances of the Product object
+for (var i = 0; i < images[0].length; i++)
+{
+  new Product(images[0][i], images[1][i]);
+}
+
+
   //Use a function to put 3 random images onto the page
   //Make sure that each item is different.
   //Add 1 to the item shown counter for each item object shown
