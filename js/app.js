@@ -1,7 +1,20 @@
 'use strict';
 
+// DONE - Store the clicks in a global variable 
+var totalClicks = 0;
+
 // Display potential products in a row of 3;
-  //Create an Item object constructor that takes a source and a name as parameters
+  //DONE - Create an Item object constructor that takes a source and a name as parameters and stores the number of times a Product is shown and selected in instance properties
+function Product(filepath, filename) {
+    this.productImgSrc = filepath;
+    this.productName = filename;
+    this.productShown = 0;
+    this.productSelected = 0;
+
+    Product.allProducts.push(this);
+}
+Product.allProducts = [];
+
   //Create instances of the Item object
   //Push each instance into an object array
   //Use a function to put 3 random images onto the page
