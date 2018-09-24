@@ -2,9 +2,12 @@
 
 BUSMALL
 
+## Purpose
+To provide market analysis by asking users to select a one product out of a list of three.
+
 ## Getting Started
 
-1. Clone the github repo at https://github.com/CClemensJr/about-me
+1. Clone the github repo at https://github.com/CClemensJr/busmall
 2. Open the index.html file in your browser of choice.
 
 ### Prerequisites
