@@ -79,15 +79,6 @@ function rando(min, max)
   return randomNumber;
 }
 
-//Show the user has selected 25 images (clicked 25 times) they are shown a graph with the images and the number of clicks per image
-// Turn off the event listeners
-// Display a list of items with the number of votes received ie "3 votes for Banana Slicer"
-// After the global click variable hits 25, call a function that shows a graph
-
-//The percentage of times an image has been shown needs to be stored
-//Use a prototype to calculate the percentage of time an item is clicked when shown then assign value to instance property.
-//Re Calculate the percentage each time an item is shown
-
 
 function checkTotalClicks()
 {
