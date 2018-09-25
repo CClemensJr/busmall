@@ -35,28 +35,27 @@ Product.prototype.countShown = function()
 };
 
 
-//DONE - Use a function to put 3 random images onto the page
-//DONE - Make sure that each item is different.
-//DONE - Add 1 to the item shown counter for each item object shown
-function showProducts(event)
-{
-  var randomProducts = [rando(0, Product.allProducts.length), rando(0, Product.allProducts.length), rando(0, Product.allProducts.length)];
+function eventHandler(event){
+  totalClicks += 1;
 
-  if (event)
+  for (var i = 0; i < Product.allProducts.length; i++)
   {
-    totalClicks += 1;
-
-    for (var i = 0; i < Product.allProducts.length; i++)
+    if (event.target.alt === Product.allProducts[i].productName)
     {
-      if (event.target.alt === Product.allProducts[i].productName)
-      {
-        Product.allProducts[i].countClicked();
-        break;
-      }
+      Product.allProducts[i].countClicked();
+
+      break;
     }
   }
 
   checkTotalClicks();
+}
+//DONE - Use a function to put 3 random images onto the page
+//DONE - Make sure that each item is different.
+//DONE - Add 1 to the item shown counter for each item object shown
+function showProducts()
+{
+  var randomProducts = [rando(0, Product.allProducts.length), rando(0, Product.allProducts.length), rando(0, Product.allProducts.length)];
 
   if (checkUniqueness(randomProducts))
   {
@@ -167,9 +166,9 @@ function checkPreviouslyShownStatus(array)
 // DONE - Create an event listener for each img tag
 // DONE - Call a function that collects the click and the image selected
 // DONE - Store the clicks in a global variable and image selected in an instance property.
-productOnLeft.addEventListener('click', showProducts);
-productInMiddle.addEventListener('click', showProducts);
-productOnRight.addEventListener('click', showProducts);
+productOnLeft.addEventListener('click', eventHandler);
+productInMiddle.addEventListener('click', eventHandler);
+productOnRight.addEventListener('click', eventHandler);
 
 
 //DONE - Create instances of the Product object
