@@ -12,18 +12,16 @@ var productElements = [productOnLeft, productInMiddle, productOnRight];
 
 var randoArray = [];
 
-// Display potential products in a row of 3;
-//DONE - Create an Item object constructor that takes a source and a name as parameters and stores the number of times a Product is shown and selected in instance properties
+
 function Product(filepath, filename) {
   this.productImgSrc = filepath;
   this.productName = filename;
   this.productShown = 0;
   this.productSelected = 0;
-  this.previouslyShown = 0;
 
   Product.allProducts.push(this);
 }
-//DONE - Push each instance into an object array
+
 Product.allProducts = [];
 
 Product.prototype.countClicked = function()
@@ -34,12 +32,9 @@ Product.prototype.countClicked = function()
 Product.prototype.countShown = function()
 {
   this.productShown += 1;
-  this.previouslyShown = 1;
 };
 
-//DONE - Use a function to put 3 random images onto the page
-//DONE - Make sure that each item is different.
-//DONE - Add 1 to the item shown counter for each item object shown
+
 function showProducts()
 { 
   var randomProducts = [rando(0, Product.allProducts.length), rando(0, Product.allProducts.length), rando(0, Product.allProducts.length)];
@@ -80,21 +75,20 @@ function rando(min, max)
 
 function checkTotalClicks()
 {
+  totalClicks += 1;
   console.log('Total Clicks = ', totalClicks);
   if (totalClicks === 25)
   {
-    productOnLeft.removeEventListener('click', showProducts);
-    productInMiddle.removeEventListener('click', showProducts);
-    productOnRight.removeEventListener('click', showProducts);
+    productImages.removeEventListener('click', eventHandler);
   }
 }
 
 function checkUniqueness(array)
 {
   console.log('In checkUniqueness');
-  console.log('Left', array[0]);
-  console.log('Mid', array[1]);
-  console.log('Right', array[2]);
+  //console.log('Left', array[0]);
+  //console.log('Mid', array[1]);
+  //console.log('Right', array[2]);
 
   var counts = [];
 
@@ -106,19 +100,19 @@ function checkUniqueness(array)
     }
     else
     {
-      console.log('Unique = ', false);
+      //console.log('Unique = ', false);
       return false;
     }
   }
 
-  console.log('Unique = ', true);
+  //console.log('Unique = ', true);
   return true;
 }
 
 function checkLastShown(array)
 {
-  console.log(`In checkLastShown: Array = ${array[0]}, ${array[1]}, ${array[2]} `);
-  console.log(`In checkLastShown: RandoArray= ${randoArray[0]}, ${randoArray[1]}, ${randoArray[2]} `);
+  console.log('In checkLastShown');
+  //console.log(`In checkLastShown: RandoArray= ${randoArray[0]}, ${randoArray[1]}, ${randoArray[2]} `);
   var notSame = true;
 
   if (randoArray[0] === undefined)
@@ -131,15 +125,14 @@ function checkLastShown(array)
     {
       if (randoArray.includes(array[i]))
       {
-        console.log(`The array value ${array[i]} is in the rando array`);
+        console.log(`The array value ${array[i]} was seen on the last page`);
         notSame = false;
 
         return true;
       }
       else
       {
-        console.log(`The array ${array[i]} is not in the rando array`);
-
+        //console.log(`The array ${array[i]} is not in the rando array`);
       }
     }
 
@@ -151,23 +144,16 @@ function checkLastShown(array)
     }
   }
 
-  console.log(`In checkLastShown: Array = ${array[0]}, ${array[1]}, ${array[2]} `);
-  console.log(`In checkLastShown: RandoArray= ${randoArray[0]}, ${randoArray[1]}, ${randoArray[2]} `);
+  //console.log(`In checkLastShown: Array = ${array[0]}, ${array[1]}, ${array[2]} `);
+  //console.log(`In checkLastShown: RandoArray= ${randoArray[0]}, ${randoArray[1]}, ${randoArray[2]} `);
 }
 
 
 
-// The user needs to click on 1 of the three images
-// DONE - Create an event listener for each img tag
-// DONE - Call a function that collects the click and the image selected
-// DONE - Store the clicks in a global variable and image selected in an instance property.
-
 function eventHandler(event){
-  event.stopPropagation();
+  //event.stopPropagation();
 
   console.log(`Target: ${event.target.id}`);
-
-  totalClicks += 1;
 
   for (var i = 0; i < Product.allProducts.length; i++)
   {
@@ -189,8 +175,6 @@ function setEventListeners()
 }
 
 
-
-//DONE - Create instances of the Product object
 for (var i = 0; i < images[0].length; i++)
 {
   new Product(images[0][i], images[1][i]);
