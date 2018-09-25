@@ -1,6 +1,7 @@
+//Create chart function
+// Send data to chart
 'use strict';
 
-// DONE - Store the clicks in a global variable
 var totalClicks = 0;
 var images = [['./img/bag.jpg', './img/banana.jpg', './img/bathroom.jpg', './img/boots.jpg', './img/breakfast.jpg', './img/bubblegum.jpg', './img/chair.jpg', './img/cthulhu.jpg', './img/dog-duck.jpg', './img/dragon.jpg', './img/pen.jpg','./img/pet-sweep.jpg', './img/scissors.jpg','./img/shark.jpg','./img/sweep.png','./img/tauntaun.jpg','./img/unicorn.jpg','./img/usb.gif','./img/water-can.jpg','./img/wine-glass.jpg'], ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu', 'dog-duck', 'dragon', 'pen', 'pet-sweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'unicorn', 'usb', 'water-can', 'wine-glass']];
 
@@ -36,7 +37,7 @@ Product.prototype.countShown = function()
 Product.prototype.selectionRate = function()
 {
   var results = Math.floor(((this.productSelected / this.productShown) * 100));
-  
+
   if (NaN)
   {
     return 'This product was not shown';
@@ -50,7 +51,7 @@ Product.prototype.selectionRate = function()
 
 
 function showProducts()
-{ 
+{
   var randomProducts = [rando(0, Product.allProducts.length), rando(0, Product.allProducts.length), rando(0, Product.allProducts.length)];
 
   if (checkUniqueness(randomProducts) === true && checkLastShown(randomProducts) === false)
@@ -59,7 +60,7 @@ function showProducts()
     {
       productElements[j].src = Product.allProducts[randomProducts[j]].productImgSrc;
       productElements[j].alt = Product.allProducts[randomProducts[j]].productName;
-      
+
       Product.allProducts[randomProducts[j]].countShown();
     }
   }
@@ -88,10 +89,11 @@ function checkTotalClicks()
   {
     productImages.removeEventListener('click', eventHandler);
 
-    for (var i = 0; i < Product.allProducts.length; i++)
-    {
-      addElement('li', `${Product.allProducts[i].productName}: Shown - ${Product.allProducts[i].productShown} times, Selected - ${Product.allProducts[i].productSelected} times with a ${Product.allProducts[i].selectionRate()}% selection rate. `, surveyResults);
-    }
+    // for (var i = 0; i < Product.allProducts.length; i++)
+    // {
+    //   addElement('li', `${Product.allProducts[i].productName}: Shown - ${Product.allProducts[i].productShown} times, Selected - ${Product.allProducts[i].productSelected} times with a ${Product.allProducts[i].selectionRate()}% selection rate. `, surveyResults);
+    // }
+    createChart();
   }
 }
 
@@ -154,9 +156,50 @@ function addElement(element, content, parent)
   return newElement;
 }
 
+function createChart()
+{
+  var ctx = document.getElementById('myChart').getContext('2d');
+  var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+      datasets: [{
+        label: '# of Votes',
+        data: [12, 19, 3, 5, 2, 3],
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)'
+        ],
+        borderColor: [
+          'rgba(255,99,132,1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)'
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero:true
+          }
+        }]
+      }
+    }
+  });
+}
+
 function eventHandler(event){
   //event.stopPropagation();
-  
+
   for (var i = 0; i < Product.allProducts.length; i++)
   {
     if (event.target.alt === Product.allProducts[i].productName)
