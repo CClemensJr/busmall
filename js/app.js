@@ -8,8 +8,8 @@ var productImages = document.getElementById('product-images');
 var productOnLeft = document.getElementById('product1');
 var productInMiddle = document.getElementById('product2');
 var productOnRight = document.getElementById('product3');
+var surveyResults = document.getElementById('survey-results');
 var productElements = [productOnLeft, productInMiddle, productOnRight];
-
 var randoArray = [];
 
 
@@ -21,7 +21,6 @@ function Product(filepath, filename) {
 
   Product.allProducts.push(this);
 }
-
 Product.allProducts = [];
 
 Product.prototype.countClicked = function()
@@ -33,6 +32,21 @@ Product.prototype.countShown = function()
 {
   this.productShown += 1;
 };
+
+Product.prototype.selectionRate = function()
+{
+  var results = Math.floor(((this.productSelected / this.productShown) * 100));
+  
+  if (NaN)
+  {
+    return 'This product was not shown';
+  }
+  else
+  {
+    return results;
+  }
+};
+
 
 
 function showProducts()
@@ -57,6 +71,7 @@ function showProducts()
   console.log(Product.allProducts);
 }
 
+
 function rando(min, max)
 {
   var randomNumber = Math.floor(Math.random() * (max - min)) + min;
@@ -73,6 +88,7 @@ function rando(min, max)
 //Use a prototype to calculate the percentage of time an item is clicked when shown then assign value to instance property.
 //Re Calculate the percentage each time an item is shown
 
+
 function checkTotalClicks()
 {
   totalClicks += 1;
@@ -80,16 +96,17 @@ function checkTotalClicks()
   if (totalClicks === 25)
   {
     productImages.removeEventListener('click', eventHandler);
+
+    for (var i = 0; i < Product.allProducts.length; i++)
+    {
+      addElement('li', `${Product.allProducts[i].productName}: Shown - ${Product.allProducts[i].productShown} times, Selected - ${Product.allProducts[i].productSelected} times with a ${Product.allProducts[i].selectionRate()}% selection rate. `, surveyResults);
+    }
   }
 }
 
+
 function checkUniqueness(array)
 {
-  console.log('In checkUniqueness');
-  //console.log('Left', array[0]);
-  //console.log('Mid', array[1]);
-  //console.log('Right', array[2]);
-
   var counts = [];
 
   for (var i = 0; i < array.length; i++)
@@ -100,19 +117,15 @@ function checkUniqueness(array)
     }
     else
     {
-      //console.log('Unique = ', false);
       return false;
     }
   }
 
-  //console.log('Unique = ', true);
   return true;
 }
 
 function checkLastShown(array)
 {
-  console.log('In checkLastShown');
-  //console.log(`In checkLastShown: RandoArray= ${randoArray[0]}, ${randoArray[1]}, ${randoArray[2]} `);
   var notSame = true;
 
   if (randoArray[0] === undefined)
@@ -125,36 +138,34 @@ function checkLastShown(array)
     {
       if (randoArray.includes(array[i]))
       {
-        console.log(`The array value ${array[i]} was seen on the last page`);
         notSame = false;
 
         return true;
-      }
-      else
-      {
-        //console.log(`The array ${array[i]} is not in the rando array`);
       }
     }
 
     if (notSame === true)
     {
       randoArray = array;
-      console.log(`The rando array is now: ${randoArray}`);
       return false;
     }
   }
-
-  //console.log(`In checkLastShown: Array = ${array[0]}, ${array[1]}, ${array[2]} `);
-  //console.log(`In checkLastShown: RandoArray= ${randoArray[0]}, ${randoArray[1]}, ${randoArray[2]} `);
 }
 
+function addElement(element, content, parent)
+{
+  var newElement = document.createElement(element);
+  var newContent = document.createTextNode(content);
 
+  newElement.appendChild(newContent);
+  parent.appendChild(newElement);
+
+  return newElement;
+}
 
 function eventHandler(event){
   //event.stopPropagation();
-
-  console.log(`Target: ${event.target.id}`);
-
+  
   for (var i = 0; i < Product.allProducts.length; i++)
   {
     if (event.target.alt === Product.allProducts[i].productName)
@@ -175,10 +186,13 @@ function setEventListeners()
 }
 
 
+
 for (var i = 0; i < images[0].length; i++)
 {
   new Product(images[0][i], images[1][i]);
 }
+
+
 
 setEventListeners();
 showProducts();
