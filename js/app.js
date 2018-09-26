@@ -1,5 +1,3 @@
-//Create chart function
-// Send data to chart
 'use strict';
 
 var totalClicks = 0;
@@ -9,7 +7,6 @@ var productImages = document.getElementById('product-images');
 var productOnLeft = document.getElementById('product1');
 var productInMiddle = document.getElementById('product2');
 var productOnRight = document.getElementById('product3');
-var surveyResults = document.getElementById('survey-results');
 var productElements = [productOnLeft, productInMiddle, productOnRight];
 var randoArray = [];
 
@@ -40,7 +37,7 @@ Product.prototype.selectionRate = function()
 
   if (NaN)
   {
-    return 'This product was not shown';
+    return 0;
   }
   else
   {
@@ -89,10 +86,6 @@ function checkTotalClicks()
   {
     productImages.removeEventListener('click', eventHandler);
 
-    // for (var i = 0; i < Product.allProducts.length; i++)
-    // {
-    //   addElement('li', `${Product.allProducts[i].productName}: Shown - ${Product.allProducts[i].productShown} times, Selected - ${Product.allProducts[i].productSelected} times with a ${Product.allProducts[i].selectionRate()}% selection rate. `, surveyResults);
-    // }
     createChart();
   }
 }
@@ -145,51 +138,58 @@ function checkLastShown(array)
   }
 }
 
-function addElement(element, content, parent)
-{
-  var newElement = document.createElement(element);
-  var newContent = document.createTextNode(content);
-
-  newElement.appendChild(newContent);
-  parent.appendChild(newElement);
-
-  return newElement;
-}
-
 function createChart()
 {
+  var timesShown = [];
+  var timesSelected = [];
+  var selectionRates = [];
+
+  for (var i = 0; i < Product.allProducts.length; i++)
+  {
+    timesShown.push(Product.allProducts[i].productShown);
+    timesSelected.push(Product.allProducts[i].productSelected);
+    selectionRates.push(Product.allProducts[i].selectionRate());
+  }
+
   var ctx = document.getElementById('myChart').getContext('2d');
-  var myChart = new Chart(ctx, {
+  var shownOrSelectedChart = new Chart(ctx, {
     type: 'bar',
     data: {
-      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+      labels: images[1],
       datasets: [{
-        label: '# of Votes',
-        data: [12, 19, 3, 5, 2, 3],
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(153, 102, 255, 0.2)',
-          'rgba(255, 159, 64, 0.2)'
-        ],
-        borderColor: [
-          'rgba(255,99,132,1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
-          'rgba(153, 102, 255, 1)',
-          'rgba(255, 159, 64, 1)'
-        ],
+        label: 'Times Shown',
+        data: timesShown,
+        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+        borderColor: 'rgba(255,99,132,1)',
         borderWidth: 1
-      }]
+      },
+      {
+        label: 'Times Selected',
+        data: timesSelected,
+        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 2
+      },
+      {
+        label: 'Selection Percentage',
+        data: selectionRates,
+        backgroundColor: 'rgba(255, 206, 86, 0.2)',
+        borderColor: 'rgba(255, 206, 86, 1)',
+        borderWidth: 3
+      }],
     },
     options: {
       scales: {
+        xAxes: [{
+          stacked: true
+        }],
         yAxes: [{
+          stacked: true,
+
           ticks: {
-            beginAtZero:true
+            max: 100,
+            min: 0,
+            stepSize: 20
           }
         }]
       }

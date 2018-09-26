@@ -50,7 +50,7 @@ body > main > section > h2 {
 
 body > main > section > figure {
     display: inline;
-    width: 100%;
+    /* width: 100%; */
 }
 
 body > main > section > figure > img {
