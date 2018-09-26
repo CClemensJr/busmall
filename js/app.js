@@ -33,7 +33,7 @@ Product.prototype.countShown = function()
 
 Product.prototype.selectionRate = function()
 {
-  var results = Math.floor(((this.productSelected / this.productShown) * 100));
+  var results = Math.floor(((this.productSelected / totalClicks) * 100));
 
   if (NaN)
   {
@@ -153,7 +153,7 @@ function createChart()
 
   var ctx = document.getElementById('myChart').getContext('2d');
   var shownOrSelectedChart = new Chart(ctx, {
-    type: 'bar',
+    type: 'horizontalBar',
     data: {
       labels: images[1],
       datasets: [{
@@ -181,16 +181,15 @@ function createChart()
     options: {
       scales: {
         xAxes: [{
-          stacked: true
+          stacked: true,
+          ticks: {
+            max: totalClicks,
+            min: 0,
+            stepSize: 10
+          }
         }],
         yAxes: [{
-          stacked: true,
-
-          ticks: {
-            max: 100,
-            min: 0,
-            stepSize: 20
-          }
+          stacked: true
         }]
       }
     }
