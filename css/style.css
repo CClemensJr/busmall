@@ -48,15 +48,23 @@ body > main > section > h2 {
     text-align: center;
 }
 
-body > main > section > figure {
-    display: inline;
-    /* width: 100%; */
+body > main > section > #product-images {
+    width: 100%;
 }
 
-body > main > section > figure > img {
+/* body > main > section > figure {
+    float: left;
+} */
+
+ body > main > section > figure > img {
     background: lightcoral;
     border: 2px solid black;
-    height: 300px;
+    float: left;
+    height: 350px;
     padding: 1em;
-    width: 300px;
+    width: 30%;
 }
+
+/* body > main > section > h3 {
+    background: red;
+} */
