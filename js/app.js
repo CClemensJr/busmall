@@ -23,12 +23,14 @@ Product.allProducts = [];
 
 Product.prototype.countClicked = function()
 {
-  this.productSelected += 1;
+  this.productSelected++;
+  localStorage.setItem(this.productName, JSON.stringify(this));
 };
 
 Product.prototype.countShown = function()
 {
-  this.productShown += 1;
+  this.productShown++;
+  localStorage.setItem(this.productName, JSON.stringify(this));
 };
 
 Product.prototype.selectionRate = function()
@@ -46,6 +48,15 @@ Product.prototype.selectionRate = function()
 };
 
 
+function createProducts()
+{
+  for (var i = 0; i < images[0].length; i++)
+  {
+    new Product(images[0][i], images[1][i]);
+  }
+
+  localStorage.setItem('products', JSON.stringify(Product.allProducts));
+}
 
 function showProducts()
 {
@@ -65,10 +76,8 @@ function showProducts()
   {
     showProducts();
   }
-
   console.log(Product.allProducts);
 }
-
 
 function rando(min, max)
 {
@@ -77,36 +86,37 @@ function rando(min, max)
   return randomNumber;
 }
 
-
 function checkTotalClicks()
 {
   totalClicks += 1;
   console.log('Total Clicks = ', totalClicks);
   if (totalClicks === 25)
   {
+    //localStorage.setItem("products", Product.allProducts);
     productImages.removeEventListener('click', eventHandler);
-
     createChart();
   }
 }
 
-
 function checkUniqueness(array)
 {
+  //console.log('In checkUniqueness');
   var counts = [];
 
   for (var i = 0; i < array.length; i++)
   {
+    ///console.log(`The number ${i} is ${array[i]}`);
     if (counts[array[i]] === undefined)
     {
       counts[array[i]] = 1;
     }
     else
     {
+      ///console.log('The numbers are not unique');
       return false;
     }
   }
-
+  //console.log('The numbers are unique');
   return true;
 }
 
@@ -136,6 +146,30 @@ function checkLastShown(array)
       return false;
     }
   }
+}
+
+function setEventListeners()
+{
+  productImages.addEventListener('click', eventHandler);
+}
+
+
+function eventHandler(event){
+  //event.stopPropagation();
+
+  for (var i = 0; i < Product.allProducts.length; i++)
+  {
+    if (event.target.alt === Product.allProducts[i].productName)
+    {
+
+      Product.allProducts[i].countClicked();
+
+      break;
+    }
+  }
+
+  checkTotalClicks();
+  showProducts();
 }
 
 function createChart()
@@ -181,7 +215,6 @@ function createChart()
     options: {
       scales: {
         xAxes: [{
-          stacked: true,
           ticks: {
             max: totalClicks,
             min: 0,
@@ -189,43 +222,12 @@ function createChart()
           }
         }],
         yAxes: [{
-          stacked: true
         }]
       }
     }
   });
 }
 
-function eventHandler(event){
-  //event.stopPropagation();
-
-  for (var i = 0; i < Product.allProducts.length; i++)
-  {
-    if (event.target.alt === Product.allProducts[i].productName)
-    {
-      Product.allProducts[i].countClicked();
-
-      break;
-    }
-  }
-
-  checkTotalClicks();
-  showProducts();
-}
-
-function setEventListeners()
-{
-  productImages.addEventListener('click', eventHandler);
-}
-
-
-
-for (var i = 0; i < images[0].length; i++)
-{
-  new Product(images[0][i], images[1][i]);
-}
-
-
-
+createProducts();
 setEventListeners();
 showProducts();
