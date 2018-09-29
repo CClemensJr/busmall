@@ -1,6 +1,5 @@
 'use strict';
 
-// DONE - Store the clicks in a global variable
 var totalClicks = 0;
 var images = [['./img/bag.jpg', './img/banana.jpg', './img/bathroom.jpg', './img/boots.jpg', './img/breakfast.jpg', './img/bubblegum.jpg', './img/chair.jpg', './img/cthulhu.jpg', './img/dog-duck.jpg', './img/dragon.jpg', './img/pen.jpg','./img/pet-sweep.jpg', './img/scissors.jpg','./img/shark.jpg','./img/sweep.png','./img/tauntaun.jpg','./img/unicorn.jpg','./img/usb.gif','./img/water-can.jpg','./img/wine-glass.jpg'], ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu', 'dog-duck', 'dragon', 'pen', 'pet-sweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'unicorn', 'usb', 'water-can', 'wine-glass']];
 
@@ -8,7 +7,6 @@ var productImages = document.getElementById('product-images');
 var productOnLeft = document.getElementById('product1');
 var productInMiddle = document.getElementById('product2');
 var productOnRight = document.getElementById('product3');
-var surveyResults = document.getElementById('survey-results');
 var productElements = [productOnLeft, productInMiddle, productOnRight];
 var randoArray = [];
 
@@ -36,10 +34,10 @@ Product.prototype.countShown = function()
 Product.prototype.selectionRate = function()
 {
   var results = Math.floor(((this.productSelected / this.productShown) * 100));
-  
+
   if (NaN)
   {
-    return 'This product was not shown';
+    return 0;
   }
   else
   {
@@ -50,7 +48,7 @@ Product.prototype.selectionRate = function()
 
 
 function showProducts()
-{ 
+{
   var randomProducts = [rando(0, Product.allProducts.length), rando(0, Product.allProducts.length), rando(0, Product.allProducts.length)];
 
   if (checkUniqueness(randomProducts) === true && checkLastShown(randomProducts) === false)
@@ -59,7 +57,7 @@ function showProducts()
     {
       productElements[j].src = Product.allProducts[randomProducts[j]].productImgSrc;
       productElements[j].alt = Product.allProducts[randomProducts[j]].productName;
-      
+
       Product.allProducts[randomProducts[j]].countShown();
     }
   }
@@ -88,10 +86,7 @@ function checkTotalClicks()
   {
     productImages.removeEventListener('click', eventHandler);
 
-    for (var i = 0; i < Product.allProducts.length; i++)
-    {
-      addElement('li', `${Product.allProducts[i].productName}: Shown - ${Product.allProducts[i].productShown} times, Selected - ${Product.allProducts[i].productSelected} times with a ${Product.allProducts[i].selectionRate()}% selection rate. `, surveyResults);
-    }
+    createChart();
   }
 }
 
@@ -143,20 +138,68 @@ function checkLastShown(array)
   }
 }
 
-function addElement(element, content, parent)
+function createChart()
 {
-  var newElement = document.createElement(element);
-  var newContent = document.createTextNode(content);
+  var timesShown = [];
+  var timesSelected = [];
+  var selectionRates = [];
 
-  newElement.appendChild(newContent);
-  parent.appendChild(newElement);
+  for (var i = 0; i < Product.allProducts.length; i++)
+  {
+    timesShown.push(Product.allProducts[i].productShown);
+    timesSelected.push(Product.allProducts[i].productSelected);
+    selectionRates.push(Product.allProducts[i].selectionRate());
+  }
 
-  return newElement;
+  var ctx = document.getElementById('myChart').getContext('2d');
+  var shownOrSelectedChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: images[1],
+      datasets: [{
+        label: 'Times Shown',
+        data: timesShown,
+        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+        borderColor: 'rgba(255,99,132,1)',
+        borderWidth: 1
+      },
+      {
+        label: 'Times Selected',
+        data: timesSelected,
+        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 2
+      },
+      {
+        label: 'Selection Percentage',
+        data: selectionRates,
+        backgroundColor: 'rgba(255, 206, 86, 0.2)',
+        borderColor: 'rgba(255, 206, 86, 1)',
+        borderWidth: 3
+      }],
+    },
+    options: {
+      scales: {
+        xAxes: [{
+          stacked: true
+        }],
+        yAxes: [{
+          stacked: true,
+
+          ticks: {
+            max: 100,
+            min: 0,
+            stepSize: 20
+          }
+        }]
+      }
+    }
+  });
 }
 
 function eventHandler(event){
   //event.stopPropagation();
-  
+
   for (var i = 0; i < Product.allProducts.length; i++)
   {
     if (event.target.alt === Product.allProducts[i].productName)
