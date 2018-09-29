@@ -1,28 +1,52 @@
-<!-- Create a header element that contains the name of the application -->
-<!-- Create an h1 element that contains the instructions -->
-<!-- Create three image elements -->
-<!-- Add an ID to each image element -->
+<!-- DONE - Create a header element that contains the name of the application -->
+<!-- DONE - Create an h1 element that contains the instructions -->
+<!-- DONE - Create three image elements -->
+<!-- DONE - Add an ID to each image element -->
+
 <!DOCTYPE html>
 <html>
     <head>
-        <title>My App</title>
+        <title>BusMall</title>
         <link rel="stylesheet" href="css/reset.css">
         <link rel="stylesheet" href="css/style.css">
     </head>
 
     <body>
         <header>
-
+            <nav>
+                <figure>
+                    <img src="https://via.placeholder.com/125x70" alt="Logo">
+                </figure>
+                <h1>BusMall</h1>
+            </nav>
         </header>
 
         <main>
-
+            <section>
+                <h2>Click on the product you like best.</h2>
+            </section>
+            <section id="product-images">
+                <figure>
+                    <img src="https://via.placeholder.com/300x300" alt="" id="product1">
+                </figure>
+                <figure>
+                    <img src="https://via.placeholder.com/300x300" alt="" id="product2">
+                </figure>
+                <figure>
+                    <img src="https://via.placeholder.com/300x300" alt="" id="product3">
+                </figure>
+            </section>
+            <section>
+                <h3>Results</h3>
+                <ul id="survey-results"></ul>
+            </section>
         </main>
 
         <footer>
 
         </footer>
 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
         <script src="js/app.js"></script>
     </body>
 </html>
