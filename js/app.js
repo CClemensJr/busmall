@@ -24,13 +24,13 @@ Product.allProducts = [];
 Product.prototype.countClicked = function()
 {
   this.productSelected++;
-  localStorage.setItem(this.productName, JSON.stringify(this));
+  //localStorage.setItem(this.productName, JSON.stringify(this));
 };
 
 Product.prototype.countShown = function()
 {
   this.productShown++;
-  localStorage.setItem(this.productName, JSON.stringify(this));
+  //localStorage.setItem(this.productName, JSON.stringify(this));
 };
 
 Product.prototype.selectionRate = function()
@@ -54,9 +54,8 @@ function createProducts()
   {
     new Product(images[0][i], images[1][i]);
   }
-
-  localStorage.setItem('products', JSON.stringify(Product.allProducts));
 }
+
 
 function showProducts()
 {
@@ -92,7 +91,7 @@ function checkTotalClicks()
   console.log('Total Clicks = ', totalClicks);
   if (totalClicks === 25)
   {
-    //localStorage.setItem("products", Product.allProducts);
+    localStorage.setItem("products", JSON.stringify(Product.allProducts));
     productImages.removeEventListener('click', eventHandler);
     createChart();
   }
@@ -216,9 +215,9 @@ function createChart()
       scales: {
         xAxes: [{
           ticks: {
-            max: totalClicks,
+            max: totalClicks / 2,
             min: 0,
-            stepSize: 10
+            stepSize: 1
           }
         }],
         yAxes: [{
