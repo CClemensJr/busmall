@@ -1,5 +1,6 @@
 'use strict';
 
+var maxClicks = 25;
 var totalClicks = 0;
 var images = [['./img/bag.jpg', './img/banana.jpg', './img/bathroom.jpg', './img/boots.jpg', './img/breakfast.jpg', './img/bubblegum.jpg', './img/chair.jpg', './img/cthulhu.jpg', './img/dog-duck.jpg', './img/dragon.jpg', './img/pen.jpg','./img/pet-sweep.jpg', './img/scissors.jpg','./img/shark.jpg','./img/sweep.png','./img/tauntaun.jpg','./img/unicorn.jpg','./img/usb.gif','./img/water-can.jpg','./img/wine-glass.jpg'], ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu', 'dog-duck', 'dragon', 'pen', 'pet-sweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'unicorn', 'usb', 'water-can', 'wine-glass']];
 
@@ -11,222 +12,241 @@ var productElements = [productOnLeft, productInMiddle, productOnRight];
 var randoArray = [];
 
 
-function Product(filepath, filename) {
+function Product(filepath, filename, productShown = 0, productClicked = 0) {
   this.productImgSrc = filepath;
   this.productName = filename;
-  this.productShown = 0;
-  this.productSelected = 0;
+  this.productShown = productShown;
+  this.productClicked = productClicked;
 
   Product.allProducts.push(this);
 }
 Product.allProducts = [];
 
-Product.prototype.countClicked = function()
-{
-  this.productSelected++;
-  //localStorage.setItem(this.productName, JSON.stringify(this));
-};
+function loadProducts() {
+  var localProducts = localStorage.getItem('products');
+  var products = JSON.parse(localProducts);
 
-Product.prototype.countShown = function()
-{
-  this.productShown++;
-  //localStorage.setItem(this.productName, JSON.stringify(this));
-};
-
-Product.prototype.selectionRate = function()
-{
-  var results = Math.floor(((this.productSelected / totalClicks) * 100));
-
-  if (NaN)
-  {
-    return 0;
+  if (products && products.length) {
+    console.log('Found it in local storage', products);
+    Product.allProducts = products;
   }
-  else
-  {
-    return results;
-  }
-};
-
-
-function createProducts()
-{
-  for (var i = 0; i < images[0].length; i++)
-  {
-    new Product(images[0][i], images[1][i]);
-  }
-}
-
-
-function showProducts()
-{
-  var randomProducts = [rando(0, Product.allProducts.length), rando(0, Product.allProducts.length), rando(0, Product.allProducts.length)];
-
-  if (checkUniqueness(randomProducts) === true && checkLastShown(randomProducts) === false)
-  {
-    for (var j = 0; j < randomProducts.length; j++)
+  else {
+    for (var i = 0; i < images[0].length; i++)
     {
-      productElements[j].src = Product.allProducts[randomProducts[j]].productImgSrc;
-      productElements[j].alt = Product.allProducts[randomProducts[j]].productName;
-
-      Product.allProducts[randomProducts[j]].countShown();
+      new Product(images[0][i], images[1][i]);
     }
   }
-  else
-  {
-    showProducts();
-  }
+
   console.log(Product.allProducts);
 }
 
-function rando(min, max)
-{
-  var randomNumber = Math.floor(Math.random() * (max - min)) + min;
+loadProducts();
+// Product.prototype.countClicked = function()
+// {
+//   this.productSelected++;
+//   //localStorage.setItem(this.productName, JSON.stringify(this));
+// };
 
-  return randomNumber;
-}
+// Product.prototype.countShown = function()
+// {
+//   this.productShown++;
+//   //localStorage.setItem(this.productName, JSON.stringify(this));
+// };
 
-function checkTotalClicks()
-{
-  totalClicks += 1;
-  console.log('Total Clicks = ', totalClicks);
-  if (totalClicks === 25)
-  {
-    localStorage.setItem("products", JSON.stringify(Product.allProducts));
-    productImages.removeEventListener('click', eventHandler);
-    createChart();
-  }
-}
+// Product.prototype.selectionRate = function()
+// {
+//   var results = Math.floor(((this.productSelected / totalClicks) * 100));
 
-function checkUniqueness(array)
-{
-  //console.log('In checkUniqueness');
-  var counts = [];
-
-  for (var i = 0; i < array.length; i++)
-  {
-    ///console.log(`The number ${i} is ${array[i]}`);
-    if (counts[array[i]] === undefined)
-    {
-      counts[array[i]] = 1;
-    }
-    else
-    {
-      ///console.log('The numbers are not unique');
-      return false;
-    }
-  }
-  //console.log('The numbers are unique');
-  return true;
-}
-
-function checkLastShown(array)
-{
-  var notSame = true;
-
-  if (randoArray[0] === undefined)
-  {
-    randoArray = array;
-  }
-  else
-  {
-    for (var i = 0; i < array.length; i++)
-    {
-      if (randoArray.includes(array[i]))
-      {
-        notSame = false;
-
-        return true;
-      }
-    }
-
-    if (notSame === true)
-    {
-      randoArray = array;
-      return false;
-    }
-  }
-}
-
-function setEventListeners()
-{
-  productImages.addEventListener('click', eventHandler);
-}
+//   if (NaN)
+//   {
+//     return 0;
+//   }
+//   else
+//   {
+//     return results;
+//   }
+// };
 
 
-function eventHandler(event){
-  //event.stopPropagation();
+// function createProducts()
+// {
+//   for (var i = 0; i < images[0].length; i++)
+//   {
+//     new Product(images[0][i], images[1][i]);
+//   }
+// }
 
-  for (var i = 0; i < Product.allProducts.length; i++)
-  {
-    if (event.target.alt === Product.allProducts[i].productName)
-    {
 
-      Product.allProducts[i].countClicked();
+// function showProducts()
+// {
+//   var randomProducts = [rando(0, Product.allProducts.length), rando(0, Product.allProducts.length), rando(0, Product.allProducts.length)];
 
-      break;
-    }
-  }
+//   if (checkUniqueness(randomProducts) === true && checkLastShown(randomProducts) === false)
+//   {
+//     for (var j = 0; j < randomProducts.length; j++)
+//     {
+//       productElements[j].src = Product.allProducts[randomProducts[j]].productImgSrc;
+//       productElements[j].alt = Product.allProducts[randomProducts[j]].productName;
 
-  checkTotalClicks();
-  showProducts();
-}
+//       Product.allProducts[randomProducts[j]].countShown();
+//     }
+//   }
+//   else
+//   {
+//     showProducts();
+//   }
+//   console.log(Product.allProducts);
+// }
 
-function createChart()
-{
-  var timesShown = [];
-  var timesSelected = [];
-  var selectionRates = [];
+// function rando(min, max)
+// {
+//   var randomNumber = Math.floor(Math.random() * (max - min)) + min;
 
-  for (var i = 0; i < Product.allProducts.length; i++)
-  {
-    timesShown.push(Product.allProducts[i].productShown);
-    timesSelected.push(Product.allProducts[i].productSelected);
-    selectionRates.push(Product.allProducts[i].selectionRate());
-  }
+//   return randomNumber;
+// }
 
-  var ctx = document.getElementById('myChart').getContext('2d');
-  var shownOrSelectedChart = new Chart(ctx, {
-    type: 'horizontalBar',
-    data: {
-      labels: images[1],
-      datasets: [{
-        label: 'Times Shown',
-        data: timesShown,
-        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-        borderColor: 'rgba(255,99,132,1)',
-        borderWidth: 1
-      },
-      {
-        label: 'Times Selected',
-        data: timesSelected,
-        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-        borderColor: 'rgba(54, 162, 235, 1)',
-        borderWidth: 2
-      },
-      {
-        label: 'Selection Percentage',
-        data: selectionRates,
-        backgroundColor: 'rgba(255, 206, 86, 0.2)',
-        borderColor: 'rgba(255, 206, 86, 1)',
-        borderWidth: 3
-      }],
-    },
-    options: {
-      scales: {
-        xAxes: [{
-          ticks: {
-            max: totalClicks / 2,
-            min: 0,
-            stepSize: 1
-          }
-        }],
-        yAxes: [{
-        }]
-      }
-    }
-  });
-}
+// function checkTotalClicks()
+// {
+//   totalClicks += 1;
+//   console.log('Total Clicks = ', totalClicks);
+//   if (totalClicks === 25)
+//   {
+//     localStorage.setItem("products", JSON.stringify(Product.allProducts));
+//     productImages.removeEventListener('click', eventHandler);
+//     createChart();
+//   }
+// }
 
-createProducts();
-setEventListeners();
-showProducts();
+// function checkUniqueness(array)
+// {
+//   //console.log('In checkUniqueness');
+//   var counts = [];
+
+//   for (var i = 0; i < array.length; i++)
+//   {
+//     ///console.log(`The number ${i} is ${array[i]}`);
+//     if (counts[array[i]] === undefined)
+//     {
+//       counts[array[i]] = 1;
+//     }
+//     else
+//     {
+//       ///console.log('The numbers are not unique');
+//       return false;
+//     }
+//   }
+//   //console.log('The numbers are unique');
+//   return true;
+// }
+
+// function checkLastShown(array)
+// {
+//   var notSame = true;
+
+//   if (randoArray[0] === undefined)
+//   {
+//     randoArray = array;
+//   }
+//   else
+//   {
+//     for (var i = 0; i < array.length; i++)
+//     {
+//       if (randoArray.includes(array[i]))
+//       {
+//         notSame = false;
+
+//         return true;
+//       }
+//     }
+
+//     if (notSame === true)
+//     {
+//       randoArray = array;
+//       return false;
+//     }
+//   }
+// }
+
+// function setEventListeners()
+// {
+//   productImages.addEventListener('click', eventHandler);
+// }
+
+
+// function eventHandler(event){
+//   //event.stopPropagation();
+
+//   for (var i = 0; i < Product.allProducts.length; i++)
+//   {
+//     if (event.target.alt === Product.allProducts[i].productName)
+//     {
+
+//       Product.allProducts[i].countClicked();
+
+//       break;
+//     }
+//   }
+
+//   checkTotalClicks();
+//   showProducts();
+// }
+
+// function createChart()
+// {
+//   var timesShown = [];
+//   var timesSelected = [];
+//   var selectionRates = [];
+
+//   for (var i = 0; i < Product.allProducts.length; i++)
+//   {
+//     timesShown.push(Product.allProducts[i].productShown);
+//     timesSelected.push(Product.allProducts[i].productSelected);
+//     selectionRates.push(Product.allProducts[i].selectionRate());
+//   }
+
+//   var ctx = document.getElementById('myChart').getContext('2d');
+//   var shownOrSelectedChart = new Chart(ctx, {
+//     type: 'horizontalBar',
+//     data: {
+//       labels: images[1],
+//       datasets: [{
+//         label: 'Times Shown',
+//         data: timesShown,
+//         backgroundColor: 'rgba(255, 99, 132, 0.2)',
+//         borderColor: 'rgba(255,99,132,1)',
+//         borderWidth: 1
+//       },
+//       {
+//         label: 'Times Selected',
+//         data: timesSelected,
+//         backgroundColor: 'rgba(54, 162, 235, 0.2)',
+//         borderColor: 'rgba(54, 162, 235, 1)',
+//         borderWidth: 2
+//       },
+//       {
+//         label: 'Selection Percentage',
+//         data: selectionRates,
+//         backgroundColor: 'rgba(255, 206, 86, 0.2)',
+//         borderColor: 'rgba(255, 206, 86, 1)',
+//         borderWidth: 3
+//       }],
+//     },
+//     options: {
+//       scales: {
+//         xAxes: [{
+//           ticks: {
+//             max: totalClicks / 2,
+//             min: 0,
+//             stepSize: 1
+//           }
+//         }],
+//         yAxes: [{
+//         }]
+//       }
+//     }
+//   });
+// }
+
+// createProducts();
+// setEventListeners();
+// showProducts();
